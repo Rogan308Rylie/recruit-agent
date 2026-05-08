@@ -1,0 +1,9 @@
+streamlit
+langchain
+langchain-google-genai
+google-generativeai
+pdfplumber
+python-docx
+pydantic
+jinja2
+python-dotenv
