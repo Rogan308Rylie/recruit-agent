@@ -7,3 +7,4 @@ python-docx
 pydantic
 jinja2
 python-dotenv
+groq

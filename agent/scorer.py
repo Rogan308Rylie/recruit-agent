@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 from groq import Groq
 from models.schemas import ParsedJD, ParsedResume, CandidateScore
-from prompts.prompts import SCORER_PROMPT
+from prompts.prompts import SCORER_PROMPT, clean_llm_response
 
 load_dotenv()
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
@@ -36,12 +36,7 @@ def score_candidate(jd: ParsedJD, resume: ParsedResume) -> CandidateScore:
         messages=[{"role": "user", "content": prompt}],
         temperature=0.1
     )
-    raw = response.choices[0].message.content.strip()
-
-    if raw.startswith("```"):
-        raw = raw.split("```")[1]
-        if raw.startswith("json"):
-            raw = raw[4:]
+    raw = clean_llm_response(response.choices[0].message.content)
 
     data = json.loads(raw)
 

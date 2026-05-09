@@ -2,6 +2,7 @@ import json
 import os
 from datetime import datetime
 from models.schemas import CandidateScore, OverrideLog
+os.makedirs("logs", exist_ok=True)
 
 OVERRIDE_LOG_PATH = "logs/overrides.json"
 
@@ -51,7 +52,7 @@ def apply_override(
             except json.JSONDecodeError:
                 logs = []
 
-    logs.append(log.dict())
+    logs.append(log.model_dump())
 
     with open(OVERRIDE_LOG_PATH, "w") as f:
         json.dump(logs, f, indent=2)

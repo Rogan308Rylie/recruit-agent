@@ -68,3 +68,11 @@ Weights for total_score calculation:
 - project_portfolio: 20%
 - communication_quality: 10%
 """
+
+def clean_llm_response(raw: str) -> str:
+    raw = raw.strip()
+    if raw.startswith("```"):
+        raw = raw.split("```")[1]
+        if raw.startswith("json"):
+            raw = raw[4:]
+    return raw.strip()
