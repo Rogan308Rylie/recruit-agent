@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, validator
 from typing import List, Optional
 
 class ParsedJD(BaseModel):
@@ -15,6 +15,18 @@ class ParsedResume(BaseModel):
     education: str
     projects: List[str]
     certifications: List[str]
+
+    @validator('education', pre=True)
+    def education_to_string(cls, v):
+        if isinstance(v, list):
+            return ', '.join(v)
+        return v
+
+    @validator('skills', 'experience', 'projects', 'certifications', pre=True)
+    def list_fields_to_list(cls, v):
+        if isinstance(v, str):
+            return [v]
+        return v
 
 class DimensionScore(BaseModel):
     score: float = Field(ge=0, le=10)
